@@ -19,26 +19,47 @@
     state: directory
     mode: '0755'
 
-- name: Check if custom logo exists locally
+- name: Check if custom logo.png exists locally
   delegate_to: localhost
   become: no
   stat:
     path: "roles/gitea/files/logo.png"
-  register: logo_file
+  register: logo_png_file
 
-- name: Upload custom logo
+- name: Upload custom logo.png
   copy:
     src: logo.png
     dest: "{{ gitea_install_dir }}/data/gitea/public/assets/img/logo.png"
     mode: '0644'
-  when: logo_file.stat.exists
+  when: logo_png_file.stat.exists
 
-- name: Upload custom favicon (if logo exists)
+- name: Upload custom favicon.png (if logo.png exists)
   copy:
     src: logo.png
     dest: "{{ gitea_install_dir }}/data/gitea/public/assets/img/favicon.png"
     mode: '0644'
-  when: logo_file.stat.exists
+  when: logo_png_file.stat.exists
+
+- name: Check if custom logo.svg exists locally
+  delegate_to: localhost
+  become: no
+  stat:
+    path: "roles/gitea/files/logo.svg"
+  register: logo_svg_file
+
+- name: Upload custom logo.svg
+  copy:
+    src: logo.svg
+    dest: "{{ gitea_install_dir }}/data/gitea/public/assets/img/logo.svg"
+    mode: '0644'
+  when: logo_svg_file.stat.exists
+
+- name: Upload custom favicon.svg (if logo.svg exists)
+  copy:
+    src: logo.svg
+    dest: "{{ gitea_install_dir }}/data/gitea/public/assets/img/favicon.svg"
+    mode: '0644'
+  when: logo_svg_file.stat.exists
 
 - name: Start Gitea via Docker Compose
   docker_compose:
