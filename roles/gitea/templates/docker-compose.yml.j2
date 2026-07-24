@@ -33,6 +33,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 {% if enable_tailscale | bool %}
       - "/var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock"
+      - "/usr/bin/tailscale:/usr/bin/tailscale:ro"
 {% else %}
       - "./data/letsencrypt:/letsencrypt"
 {% endif %}
