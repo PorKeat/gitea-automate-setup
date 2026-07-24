@@ -1,9 +1,39 @@
 <style>
 /* 
- * Sleek Monochromatic Theme Override 
+ * Sleek Monochromatic Theme Overrides
  * Matches the black and white PES EXPO logo
  */
-:root {
+
+/* Animations */
+.logo {
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+.logo:hover {
+    transform: scale(1.02);
+}
+
+/* Light Mode Specifics */
+html.theme-gitea-light, html.theme-gitea-auto {
+    /* Invert the white logo to black for light mode! */
+    --logo-filter: invert(1);
+    
+    --color-primary: #333333 !important;
+    --color-primary-contrast: #ffffff !important;
+    --color-primary-dark-1: #222222 !important;
+    --color-primary-dark-2: #111111 !important;
+    --color-primary-dark-3: #000000 !important;
+    --color-primary-light-1: #444444 !important;
+    --color-primary-light-2: #555555 !important;
+    --color-primary-light-3: #666666 !important;
+}
+
+html.theme-gitea-light img.logo, 
+html.theme-gitea-auto img.logo {
+    filter: invert(1);
+}
+
+/* Dark Mode Specifics */
+html.theme-gitea-dark {
   --color-primary: #888888 !important;
   --color-primary-contrast: #ffffff !important;
   --color-primary-dark-1: #777777 !important;
@@ -22,15 +52,18 @@
   --color-primary-light-7: #f5f5f5 !important;
 }
 
-/* Force primary buttons (like Sign In) to be a sleek dark grey */
+/* Force primary buttons (like Sign In) to be a sleek dark grey on all themes */
 .ui.primary.button, .ui.primary.buttons .button { 
-    background-color: #444444 !important; 
+    background-color: var(--color-primary-dark-1) !important; 
     color: #ffffff !important; 
-    border: 1px solid #555555 !important;
+    border: 1px solid var(--color-primary-dark-3) !important;
+    transition: background-color 0.2s ease;
 }
 .ui.primary.button:hover, .ui.primary.buttons .button:hover { 
-    background-color: #666666 !important; 
+    background-color: var(--color-primary-light-2) !important; 
 }
+
+
 
 /* Links */
 a { color: #cccccc; }
