@@ -1,0 +1,6 @@
+---
+- name: Deploy Gitea
+  hosts: gitea_servers
+  become: yes
+  roles:
+    - gitea

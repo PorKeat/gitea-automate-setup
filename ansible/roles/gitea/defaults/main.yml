@@ -1,0 +1,10 @@
+---
+gitea_domain: "gitea.sengporkeat.com"
+gitea_letsencrypt_email: "alexkgm2412@gmail.com"
+gitea_docker_api_version: "1.41"
+
+gitea_db_user: "gitea"
+gitea_db_password: "485a47c38d0487933ff08d686d8b922f"
+gitea_db_name: "gitea"
+
+gitea_install_dir: "/home/alexkgm/gitea-setup"
