@@ -20,7 +20,7 @@ All configuration is centralized in a single variables file. To change passwords
 
 👉 **`roles/gitea/defaults/main.yml`**
 
-### Key Variables:
+### Key Variables
 
 - `gitea_domain`: The domain name where Gitea will be hosted (e.g., `gitea.sengporkeat.com`).
 - `gitea_default_theme`: Default theme for new users (`gitea-dark`, `gitea-light`, or `gitea-auto`).
@@ -30,6 +30,7 @@ All configuration is centralized in a single variables file. To change passwords
 ## 🎨 UI & Branding
 
 The PES EXPO branding is applied automatically during deployment:
+
 - **Logos:** Located in `roles/gitea/files/logo.png`. (Converted to SVG automatically by the deployment script).
 - **Themes & Colors:** Custom CSS overrides are injected via `roles/gitea/files/header.tmpl`. This forces Gitea to use a sleek monochromatic palette and intelligently inverts the logo based on the user's Light/Dark mode preference.
 - **Landing Page:** The default Gitea homepage is completely overridden by `roles/gitea/files/home.tmpl`.
@@ -37,6 +38,7 @@ The PES EXPO branding is applied automatically during deployment:
 ## 🛠 Prerequisites
 
 To run this deployment from your local machine, you need:
+
 1. **Just:** A handy command runner (`brew install just`).
 2. **Ansible:** The automation engine (`brew install ansible`).
 3. **SSH Access:** Your local machine must have SSH access to the target GCP server.
