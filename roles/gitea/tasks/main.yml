@@ -82,6 +82,20 @@
     dest: "{{ gitea_install_dir }}/data/gitea/gitea/templates/custom/header.tmpl"
     mode: '0644'
 
+- name: Check if Tailscale is installed
+  command: tailscale version
+  register: tailscale_installed
+  ignore_errors: true
+  when: enable_tailscale | bool
+
+- name: Install Tailscale
+  shell: curl -fsSL https://tailscale.com/install.sh | sh
+  when: enable_tailscale | bool and tailscale_installed.rc != 0
+
+- name: Authenticate Tailscale
+  command: tailscale up --authkey="{{ tailscale_auth_key }}" --ssh
+  when: enable_tailscale | bool
+
 - name: Start Gitea via Docker Compose
   command: docker compose pull
   args:
