@@ -1,48 +1,57 @@
 # PES EXPO Gitea Automation
 
-This repository contains the fully automated Infrastructure-as-Code (IaC) deployment for the **PES EXPO Code Repository** using Ansible and Docker.
+This repository contains the fully automated Infrastructure-as-Code (IaC) deployment for the **PES EXPO Code Repository**. 
 
-It automatically provisions the server, sets up the database, injects custom UI themes (Light/Dark mode), applies the PES EXPO branding, and bypasses the manual Gitea installation screens.
+It uses Ansible to automatically provision a Google Cloud server, install Docker, configure Gitea and PostgreSQL, inject custom UI branding, and optionally lock the server down behind a military-grade Tailscale Zero-Trust network with automated HTTPS.
 
-## 🚀 Quick Start
+---
 
-To deploy or update the server, simply run:
+## 🚀 How to Setup from Scratch
 
+Follow these steps to deploy the server.
+
+### Step 1: Install Prerequisites on your Mac
+You need two tools installed on your local computer to run this automation. Open your Terminal and run:
+```bash
+# Install 'just' (a command runner) and 'ansible' (the automation engine)
+brew install just ansible
+```
+*Note: Your Mac must have SSH access to the GCP server (`34.21.129.81`) via `~/.ssh/google_compute_engine`.*
+
+### Step 2: Get a Tailscale Auth Key (Required for Security)
+To lock the server off the public internet, you need a secret key from Tailscale.
+1. Go to your [Tailscale Admin Console](https://login.tailscale.com/admin/settings/keys).
+2. Click **Generate auth key...** (Check "Reusable" and "Ephemeral").
+3. Copy the `tskey-auth-...` secret code it gives you.
+4. Go to the **DNS** tab in Tailscale and click **Enable MagicDNS** and **Enable HTTPS Certificates**.
+
+### Step 3: Configure the Variables
+Open the `roles/gitea/defaults/main.yml` file in your code editor. This is the "control center" for the entire server.
+
+You must fill in your Tailscale key here:
+```yaml
+enable_tailscale: true
+tailscale_auth_key: "PASTE-YOUR-SECRET-KEY-HERE"
+```
+*(You can also change the default admin passwords and database credentials in this file if you wish).*
+
+### Step 4: Deploy!
+Open your terminal in this repository and run:
 ```bash
 just deploy
 ```
+Ansible will automatically connect to the server, install everything, apply the Tailscale security lockdown, inject the PES EXPO UI theme, and fetch the native SSL certificates. 
 
-> **Note:** This command automatically runs the Ansible playbook (`site.yml`) against the target server defined in the `inventory` file.
+When it finishes, you can access your secure code repository at your Tailscale MagicDNS link! (e.g. `https://gitea.tail20d75a.ts.net`).
 
-## ⚙️ Configuration
+---
 
-All configuration is centralized in a single variables file. To change passwords, domains, or admin users, edit:
-
-👉 **`roles/gitea/defaults/main.yml`**
-
-### Key Variables
-
-- `gitea_domain`: The domain name where Gitea will be hosted (e.g., `gitea.sengporkeat.com`).
-- `gitea_default_theme`: Default theme for new users (`gitea-dark`, `gitea-light`, or `gitea-auto`).
-- `gitea_auto_init`: Set to `true` to bypass the web install screen and auto-create the admin user.
-- `gitea_admin_user` / `gitea_admin_password`: The credentials for the auto-created admin account.
-- `enable_tailscale`: Set to `true` to take the server off the public internet and lock it down via a Tailscale zero-trust VPN mesh.
-- `tailscale_auth_key`: Your Tailscale authentication key (required if `enable_tailscale` is `true`).
-
-> **Note on Tailscale HTTPS:** If you enable Tailscale, Gitea will automatically use Tailscale's MagicDNS feature to generate a secure `https://` domain for you. For this to work, you MUST go to your Tailscale Admin Dashboard -> **DNS** tab and explicitly click **Enable MagicDNS** and **Enable HTTPS Certificates** before deploying.
-
-## 🎨 UI & Branding
+## 🎨 UI & Branding Details
 
 The PES EXPO branding is applied automatically during deployment:
 
-- **Logos:** Located in `roles/gitea/files/logo.png`. (Converted to SVG automatically by the deployment script).
+- **Logos:** Located in `roles/gitea/files/logo.svg`.
 - **Themes & Colors:** Custom CSS overrides are injected via `roles/gitea/files/header.tmpl`. This forces Gitea to use a sleek monochromatic palette and intelligently inverts the logo based on the user's Light/Dark mode preference.
 - **Landing Page:** The default Gitea homepage is completely overridden by `roles/gitea/files/home.tmpl`.
 
-## 🛠 Prerequisites
-
-To run this deployment from your local machine, you need:
-
-1. **Just:** A handy command runner (`brew install just`).
-2. **Ansible:** The automation engine (`brew install ansible`).
-3. **SSH Access:** Your local machine must have SSH access to the target GCP server.
+If you ever want to change the CSS or the landing page text, simply edit those files and run `just deploy` again!
