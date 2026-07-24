@@ -44,6 +44,10 @@ services:
       - GITEA__server__ROOT_URL=https://{{ gitea_domain }}/
       # UI configuration
       - GITEA__ui__DEFAULT_THEME={{ gitea_default_theme }}
+{% if gitea_auto_init | bool %}
+      # Auto-initialization
+      - GITEA__security__INSTALL_LOCK=true
+{% endif %}
     volumes:
       - ./data/gitea:/data
     ports:

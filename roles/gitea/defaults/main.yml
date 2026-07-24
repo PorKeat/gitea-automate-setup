@@ -10,3 +10,9 @@ gitea_db_name: "gitea"
 gitea_default_theme: "gitea-dark" # options: gitea-auto, gitea-light, gitea-dark
 
 gitea_install_dir: "/home/alexkgm/gitea-setup"
+
+# Auto-initialization (Bypasses the "Install" screen)
+gitea_auto_init: true
+gitea_admin_user: "admin"
+gitea_admin_password: "AdminPassword123!"
+gitea_admin_email: "admin@example.com"

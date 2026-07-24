@@ -70,3 +70,14 @@
   command: docker compose up -d
   args:
     chdir: "{{ gitea_install_dir }}"
+
+- name: Create initial admin user
+  command: docker compose exec -T -u git gitea gitea admin user create --admin --username "{{ gitea_admin_user }}" --password "{{ gitea_admin_password }}" --email "{{ gitea_admin_email }}" --must-change-password=false
+  args:
+    chdir: "{{ gitea_install_dir }}"
+  register: admin_create
+  until: admin_create.rc == 0 or 'user already exists' in admin_create.stderr
+  retries: 15
+  delay: 5
+  failed_when: admin_create.rc != 0 and 'user already exists' not in admin_create.stderr
+  when: gitea_auto_init | bool
