@@ -59,7 +59,7 @@ services:
       - "2222:22"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.gitea.rule=Host(`{{ gitea_domain }}`)"
+      - "traefik.http.routers.gitea.rule=PathPrefix(`/`)"
       - "traefik.http.routers.gitea.entrypoints=websecure"
       - "traefik.http.routers.gitea.tls.certresolver=myresolver"
       - "traefik.http.services.gitea.loadbalancer.server.port=3000"
