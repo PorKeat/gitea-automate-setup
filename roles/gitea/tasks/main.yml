@@ -81,3 +81,8 @@
   delay: 5
   failed_when: admin_create.rc != 0 and 'user already exists' not in admin_create.stderr
   when: gitea_auto_init | bool
+
+- name: Restart Gitea container to apply UI changes
+  command: docker compose restart gitea
+  args:
+    chdir: "{{ gitea_install_dir }}"
