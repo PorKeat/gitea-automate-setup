@@ -1,4 +1,4 @@
-# PES EXPO Gitea Automation
+# Gitea Automation
 
 This repository contains the fully automated Infrastructure-as-Code (IaC) deployment for the **PES EXPO Code Repository**.
 
