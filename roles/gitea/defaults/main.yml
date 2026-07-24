@@ -13,6 +13,6 @@ gitea_install_dir: "/home/alexkgm/gitea-setup"
 
 # Auto-initialization (Bypasses the "Install" screen)
 gitea_auto_init: true
-gitea_admin_user: "admin"
-gitea_admin_password: "AdminPassword123!"
+gitea_admin_user: "pes"
+gitea_admin_password: "Pes!8472Admin$99KqZ"
 gitea_admin_email: "admin@example.com"
