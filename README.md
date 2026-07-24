@@ -29,6 +29,8 @@ All configuration is centralized in a single variables file. To change passwords
 - `enable_tailscale`: Set to `true` to take the server off the public internet and lock it down via a Tailscale zero-trust VPN mesh.
 - `tailscale_auth_key`: Your Tailscale authentication key (required if `enable_tailscale` is `true`).
 
+> **Note on Tailscale HTTPS:** If you enable Tailscale, Gitea will automatically use Tailscale's MagicDNS feature to generate a secure `https://` domain for you. For this to work, you MUST go to your Tailscale Admin Dashboard -> **DNS** tab and explicitly click **Enable MagicDNS** and **Enable HTTPS Certificates** before deploying.
+
 ## 🎨 UI & Branding
 
 The PES EXPO branding is applied automatically during deployment:
