@@ -31,6 +31,17 @@
   set_fact:
     traefik_bind_ip: "{{ tailscale_ip_cmd.stdout if enable_tailscale | bool else '' }}"
 
+- name: Get Tailscale Status
+  command: tailscale status --json
+  register: tailscale_status_cmd
+  when: enable_tailscale | bool
+  changed_when: false
+
+- name: Set Gitea Domain to Tailscale MagicDNS
+  set_fact:
+    gitea_domain: "{{ (tailscale_status_cmd.stdout | from_json).Self.DNSName | regex_replace('\\.$', '') }}"
+  when: enable_tailscale | bool
+
 - name: Template docker-compose.yml
   template:
     src: docker-compose.yml.j2

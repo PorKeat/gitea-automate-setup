@@ -11,10 +11,14 @@ services:
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--entrypoints.websecure.address=:443"
-      # ACME (Let's Encrypt) configuration
+      # SSL Certificates configuration
+{% if enable_tailscale | bool %}
+      - "--certificatesresolvers.myresolver.tailscale=true"
+{% else %}
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.email={{ gitea_letsencrypt_email }}"
+      - "--certificatesresolvers.myresolver.acme.email={{ gitea_admin_email }}"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+{% endif %}
     environment:
       - DOCKER_API_VERSION={{ gitea_docker_api_version }}
     ports:
@@ -27,7 +31,11 @@ services:
 {% endif %}
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+{% if enable_tailscale | bool %}
+      - "/var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock"
+{% else %}
       - "./data/letsencrypt:/letsencrypt"
+{% endif %}
 
   gitea:
     image: gitea/gitea:latest
@@ -59,7 +67,7 @@ services:
       - "2222:22"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.gitea.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.gitea.rule=Host(`{{ gitea_domain }}`)"
       - "traefik.http.routers.gitea.entrypoints=websecure"
       - "traefik.http.routers.gitea.tls.certresolver=myresolver"
       - "traefik.http.services.gitea.loadbalancer.server.port=3000"
