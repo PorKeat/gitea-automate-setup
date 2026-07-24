@@ -1,60 +1,41 @@
-# Gitea Automated Infrastructure
+# PES EXPO Gitea Automation
 
-This repository contains the infrastructure-as-code to deploy a production-ready, fully secure Gitea instance on any cloud provider. It is entirely automated using **Ansible** and managed via **Justfile**.
+This repository contains the fully automated Infrastructure-as-Code (IaC) deployment for the **PES EXPO Code Repository** using Ansible and Docker.
 
-## 🚀 Features
+It automatically provisions the server, sets up the database, injects custom UI themes (Light/Dark mode), applies the PES EXPO branding, and bypasses the manual Gitea installation screens.
 
-- **Automated Deployment**: Single command deployment to any server.
-- **Dynamic Configuration**: Variables are centralized in `roles/gitea/defaults/main.yml`.
-- **Secure Networking**: Uses Traefik v3.6 to automatically provision Let's Encrypt SSL certificates.
-- **Custom Branding**: Automatically uploads custom logos and assets (like `logo.png`) on startup.
+## 🚀 Quick Start
 
----
-
-## 🛠 Prerequisites
-
-Before deploying, ensure you have the following installed on your local machine:
-- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) (`brew install ansible`)
-- [Just](https://github.com/casey/just) (`brew install just`)
-
-## 📂 Project Structure
-
-```text
-.
-├── Justfile                      # Command runner
-├── inventory                     # Your server IP and SSH key configuration
-├── site.yml                      # Main Ansible playbook entry point
-└── roles/
-    └── gitea/
-        ├── defaults/main.yml     # Central configuration (Domain, Email, DB Passwords)
-        ├── files/logo.png        # Drop your custom logo here to apply it to Gitea
-        ├── tasks/main.yml        # Automation logic
-        └── templates/
-            └── docker-compose.yml.j2 # Dynamic Docker Compose template
-```
-
-## ⚙️ Configuration
-
-1. **Edit the Inventory**: Open the `inventory` file and replace the IP address and SSH key path with your actual server details.
-2. **Set Variables**: Open `roles/gitea/defaults/main.yml` and configure your:
-   - Domain Name
-   - Let's Encrypt Email
-   - Database Passwords
-3. **Custom Branding**: Place a `logo.png` inside the `roles/gitea/files/` directory.
-
-## 🚀 Deployment
-
-You can use the built-in `just` commands to manage your infrastructure:
+To deploy or update the server, simply run:
 
 ```bash
-# Display all available commands
-just
-
-# Ping the server to verify connectivity
-just ping
-
-# Deploy Gitea to your server
 just deploy
 ```
 
-That's it! In a few moments, your Gitea server will be completely set up, branded, and secured with SSL.
+> **Note:** This command automatically runs the Ansible playbook (`site.yml`) against the target server defined in the `inventory` file.
+
+## ⚙️ Configuration
+
+All configuration is centralized in a single variables file. To change passwords, domains, or admin users, edit:
+
+👉 **`roles/gitea/defaults/main.yml`**
+
+### Key Variables:
+- `gitea_domain`: The domain name where Gitea will be hosted (e.g., `gitea.sengporkeat.com`).
+- `gitea_default_theme`: Default theme for new users (`gitea-dark`, `gitea-light`, or `gitea-auto`).
+- `gitea_auto_init`: Set to `true` to bypass the web install screen and auto-create the admin user.
+- `gitea_admin_user` / `gitea_admin_password`: The credentials for the auto-created admin account.
+
+## 🎨 UI & Branding
+
+The PES EXPO branding is applied automatically during deployment:
+- **Logos:** Located in `roles/gitea/files/logo.png`. (Converted to SVG automatically by the deployment script).
+- **Themes & Colors:** Custom CSS overrides are injected via `roles/gitea/files/header.tmpl`. This forces Gitea to use a sleek monochromatic palette and intelligently inverts the logo based on the user's Light/Dark mode preference.
+- **Landing Page:** The default Gitea homepage is completely overridden by `roles/gitea/files/home.tmpl`.
+
+## 🛠 Prerequisites
+
+To run this deployment from your local machine, you need:
+1. **Just:** A handy command runner (`brew install just`).
+2. **Ansible:** The automation engine (`brew install ansible`).
+3. **SSH Access:** Your local machine must have SSH access to the target GCP server.
