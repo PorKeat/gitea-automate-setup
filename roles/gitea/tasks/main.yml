@@ -61,6 +61,27 @@
     mode: '0644'
   when: logo_svg_file.stat.exists
 
+- name: Ensure custom templates directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ gitea_install_dir }}/data/gitea/gitea/templates"
+    - "{{ gitea_install_dir }}/data/gitea/gitea/templates/custom"
+
+- name: Upload custom home template
+  copy:
+    src: home.tmpl
+    dest: "{{ gitea_install_dir }}/data/gitea/gitea/templates/home.tmpl"
+    mode: '0644'
+
+- name: Upload custom header template (CSS overrides)
+  copy:
+    src: header.tmpl
+    dest: "{{ gitea_install_dir }}/data/gitea/gitea/templates/custom/header.tmpl"
+    mode: '0644'
+
 - name: Start Gitea via Docker Compose
   command: docker compose pull
   args:

@@ -1,0 +1,46 @@
+<style>
+/* 
+ * Sleek Monochromatic Theme Override 
+ * Matches the black and white PES EXPO logo
+ */
+:root {
+  --color-primary: #888888 !important;
+  --color-primary-contrast: #ffffff !important;
+  --color-primary-dark-1: #777777 !important;
+  --color-primary-dark-2: #666666 !important;
+  --color-primary-dark-3: #555555 !important;
+  --color-primary-dark-4: #444444 !important;
+  --color-primary-dark-5: #333333 !important;
+  --color-primary-dark-6: #222222 !important;
+  --color-primary-dark-7: #111111 !important;
+  --color-primary-light-1: #999999 !important;
+  --color-primary-light-2: #aaaaaa !important;
+  --color-primary-light-3: #bbbbbb !important;
+  --color-primary-light-4: #cccccc !important;
+  --color-primary-light-5: #dddddd !important;
+  --color-primary-light-6: #eeeeee !important;
+  --color-primary-light-7: #f5f5f5 !important;
+}
+
+/* Force primary buttons (like Sign In) to be a sleek dark grey */
+.ui.primary.button, .ui.primary.buttons .button { 
+    background-color: #444444 !important; 
+    color: #ffffff !important; 
+    border: 1px solid #555555 !important;
+}
+.ui.primary.button:hover, .ui.primary.buttons .button:hover { 
+    background-color: #666666 !important; 
+}
+
+/* Links */
+a { color: #cccccc; }
+a:hover { color: #ffffff; }
+
+/* Subdue the green checkmarks / success colors slightly to fit better if needed */
+.ui.green.button, .ui.green.buttons .button {
+    background-color: #555555 !important;
+}
+.ui.green.button:hover, .ui.green.buttons .button:hover {
+    background-color: #777777 !important;
+}
+</style>
