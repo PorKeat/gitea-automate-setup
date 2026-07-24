@@ -19,4 +19,4 @@ gitea_admin_email: "admin@example.com"
 
 # Zero Trust Network Access
 enable_tailscale: true
-tailscale_auth_key: "tskey-auth-kUZN1xiZg611CNTRL-31dfZjaZ86aD1Zaap5YJ6aoxrWgkHTqf"
+tailscale_auth_key: "tskey-auth-YOUR-KEY-HERE"
