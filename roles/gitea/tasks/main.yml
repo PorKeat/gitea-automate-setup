@@ -94,7 +94,17 @@
 
 - name: Authenticate Tailscale
   command: tailscale up --authkey="{{ tailscale_auth_key }}" --ssh
+  when: enable_tailscale | bool and 'YOUR-KEY-HERE' not in tailscale_auth_key
+
+- name: Get Tailscale IPv4 Address
+  command: tailscale ip -4
+  register: tailscale_ip_cmd
   when: enable_tailscale | bool
+  changed_when: false
+
+- name: Set Traefik Bind IP
+  set_fact:
+    traefik_bind_ip: "{{ tailscale_ip_cmd.stdout if enable_tailscale | bool else '' }}"
 
 - name: Start Gitea via Docker Compose
   command: docker compose pull

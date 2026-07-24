@@ -18,8 +18,13 @@ services:
     environment:
       - DOCKER_API_VERSION={{ gitea_docker_api_version }}
     ports:
+{% if traefik_bind_ip %}
+      - "{{ traefik_bind_ip }}:80:80"
+      - "{{ traefik_bind_ip }}:443:443"
+{% else %}
       - "80:80"
       - "443:443"
+{% endif %}
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./data/letsencrypt:/letsencrypt"
