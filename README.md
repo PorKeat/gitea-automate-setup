@@ -21,6 +21,7 @@ All configuration is centralized in a single variables file. To change passwords
 👉 **`roles/gitea/defaults/main.yml`**
 
 ### Key Variables:
+
 - `gitea_domain`: The domain name where Gitea will be hosted (e.g., `gitea.sengporkeat.com`).
 - `gitea_default_theme`: Default theme for new users (`gitea-dark`, `gitea-light`, or `gitea-auto`).
 - `gitea_auto_init`: Set to `true` to bypass the web install screen and auto-create the admin user.
