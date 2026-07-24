@@ -62,17 +62,11 @@
   when: logo_svg_file.stat.exists
 
 - name: Start Gitea via Docker Compose
-  docker_compose:
-    project_src: "{{ gitea_install_dir }}"
-    state: present
-    pull: yes
-  register: compose_result
+  command: docker compose pull
+  args:
+    chdir: "{{ gitea_install_dir }}"
 
-# Note: We assume docker-compose python module is installed on the host. 
-# Alternatively, we can use the raw command.
-- name: Start Gitea using shell (fallback)
-  shell: |
-    cd {{ gitea_install_dir }}
-    docker compose up -d
-  when: compose_result is failed or not compose_result
-  ignore_errors: yes
+- name: Start Gitea via Docker Compose
+  command: docker compose up -d
+  args:
+    chdir: "{{ gitea_install_dir }}"
